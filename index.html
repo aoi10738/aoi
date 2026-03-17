@@ -1,1 +1,123 @@
-ああ
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ガチャゲーム</title>
+<style>
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background: linear-gradient(#1e1e2f, #3a3a5f);
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+#container {
+    margin-top: 40px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background: gold;
+    color: black;
+    cursor: pointer;
+}
+
+button:hover {
+    background: orange;
+}
+
+#result {
+    margin-top: 30px;
+    font-size: 28px;
+}
+
+.rarity {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.ssr { color: gold; }
+.sr { color: deepskyblue; }
+.r { color: lightgray; }
+
+.card {
+    margin: 30px auto;
+    padding: 30px;
+    width: 250px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+</style>
+</head>
+<body>
+
+<h1>🎰 ガチャゲーム</h1>
+
+<div id="container">
+    <button onclick="drawGacha()">ガチャを引く！</button>
+
+    <div id="card" class="card" style="display:none;">
+        <div id="result"></div>
+        <div id="rarity" class="rarity"></div>
+    </div>
+</div>
+
+<script>
+const characters = [
+    {name: "勇者アレン", rarity: "SSR", rate: 5},
+    {name: "魔導士ルナ", rarity: "SSR", rate: 5},
+    {name: "剣士レオ", rarity: "SR", rate: 20},
+    {name: "弓使いミナ", rarity: "SR", rate: 20},
+    {name: "兵士トム", rarity: "R", rate: 50}
+];
+
+function drawGacha() {
+    let rand = Math.random() * 100;
+    let sum = 0;
+    let selected;
+
+    for (let char of characters) {
+        sum += char.rate;
+        if (rand <= sum) {
+            selected = char;
+            break;
+        }
+    }
+
+    showResult(selected);
+}
+
+function showResult(char) {
+    const result = document.getElementById("result");
+    const rarity = document.getElementById("rarity");
+    const card = document.getElementById("card");
+
+    card.style.display = "block";
+
+    result.innerText = "✨ " + char.name;
+    rarity.innerText = char.rarity;
+
+    rarity.className = "rarity " + char.rarity.toLowerCase();
+
+    // 演出
+    if (char.rarity === "SSR") {
+        document.body.style.background = "linear-gradient(gold, orange)";
+    } else if (char.rarity === "SR") {
+        document.body.style.background = "linear-gradient(#00c6ff, #0072ff)";
+    } else {
+        document.body.style.background = "linear-gradient(#555, #222)";
+    }
+}
+</script>
+
+</body>
+</html>
